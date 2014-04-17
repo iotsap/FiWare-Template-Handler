@@ -1,0 +1,72 @@
+How to install Activiti
+
+Preconditions:
+Use Java 6, instead of Java 7
+Install the Java 6 JDK if you don't have it (http://www.oracle.com/technetwork/java/javase/downloads/jdk-6u25-download-346242.html)
+Change JAVA_HOME and the Windows Path to the Java 6 JDK Path
+Install Ant (http://ant.apache.org/bindownload.cgi) and Maven (http://maven.apache.org/download.html)
+
+The build ran successfully with the following setup:
+Java JDK 1.6.0_31
+Apache Maven 2.2.1
+Apache Ant 1.7.1
+
+Note: Due to problems with the SAP Proxy Server during the build process (Maven/Activiti fails to download needed packages and libraries) we recommend to use a network WITHOUT ANY PROXY to build the systems
+To avoid this problem, configure the proxy settings for Ant and Maven in the following ways:
+Ant: add an environment variable "ANT_OPTS" with the value "-Dhttp.proxyHost=proxy.wdf.sap.corp -Dhttp.proxyPort=8080"
+Maven: add the following lines within the <proxies></proxies> section of your C:\Users\<your user id>\.m2\settings.xml file:
+<proxy>
+	<active>true</active>
+    <protocol>http</protocol>
+    <host>proxy.wdf.sap.corp</host>
+    <port>8080</port>
+</proxy>
+
+Installation guide:
+1. Checkout the project folder (SVN path "")
+2. Go into in the "distro" subfolder
+3. Run the ANT command "ant clean distro"
+4. The distribution can now be found in the target folder
+5. Switch to the subfolder target/activiti-5.9/setup/
+6. Add the line "tomcat.enable.debug=true" to the generated file /distro/target/activiti-5.9/setup/build.properties
+7. Run the ANT command "ant demo.start"
+8. Run the ANT command "ant demo.stop"
+9. Edit startup.bat of the downloaded and extracted tomcat installation:
+9a. Add the lines
+	set JPDA_ADDRESS=8000
+	set JPDA_TRANSPORT=dt_socket
+at the beginning of the file.
+9b. Change the last line to 
+	call "%EXECUTABLE%" jpda start %CMD_LINE_ARGS%
+10. Copy the file jaxb-impl-2.2.6.jar from \distro\target\activiti-5.9\apps\apache-tomcat-6.0.32\webapps\activiti-explorer\WEB-INF\lib to \distro\target\activiti-5.9\apps\apache-tomcat-6.0.32\lib and change the line
+	set "CLASSPATH=%CLASSPATH%%CATALINA_HOME%\bin\bootstrap.jar"
+of the file catalina.bat of the downloaded and extracted tomcat installation to the line
+	set "CLASSPATH=%CLASSPATH%%CATALINA_HOME%\bin\bootstrap.jar;%CATALINA_HOME%\lib\jaxb-impl-2.2.6.jar"
+11. Run the ANT command "ant demo.start"
+
+Known issues:
+- In \modules\activiti-webapp-explorer2\pom.xml the dependency on activiti-cxf is added
+
+Eclipse Setup:
+1. Install a current Eclipse (mine is "Eclipse Java EE IDE for Web Developers" "Version: Indigo Service Release 2")
+2. Install the m2e Maven Eclipse integration. (Update Site: http://download.eclipse.org/technology/m2e/releases)
+3. Import all projects from <svn-root>\execution\activiti-5.9\trunk\modules except activiti-cactus
+4. If you encounter compile problems regarding Access restriction on the rt.jar, do the following: Go to the Build Path settings in the project properties; Remove the JRE System Library; Add it back: Select "Add Library" and select the JRE System Library. (See http://stackoverflow.com/questions/860187/access-restriction-on-class-due-to-restriction-on-required-library-rt-jar for details.) (Maybe this is fixed with checkin of new .classpath files...)
+5. If you encounter Maven problems with the artifact com.oracle.jdbc:ojdbc5:jar:11.2.0.1.0, copy ojdbc5-11.2.0.1.0.jar from https://forge.sap.corp/svn/iota/wp2/execution/activiti-5.9/trunk/libs to C:\Users\<your_user_id>\.m2\repository\com\oracle\jdbc\ojdbc5\11.2.0.1.0
+5. Import code formatting templates from <svn-root>\activiti-5.9\trunk\eclipse with the eclipse preferences dialogues that are encoded in the filenames.
+6. After starting tomcat the second time, you can attach a remote debugging session with Eclipse. Therefore set a breakpoint, go to "Run->Debug Configurations...", click on "Remote Java Applications", click "New", type in the title, save and run. Interact with the running Activiti Engine, so that it reaches the breakpoint.
+
+To restart Tomcat with the code changes that were done within Eclipse, perform the following steps:
+1. Run maven clean install on all projects that were changed.
+1a. Select "Run As" -> "Maven Build ..." from the projects context menu.
+1b. Specify "clean install" as goals, enter a name for the launch configuration, and check "Skip Tests" if you want to do that.
+1c. Click "Run".
+2. Go to the directory \execution\activiti-5.9\trunk\distro and run "ant copy.resources". (This target was newly added.)
+3. Go to the directory \execution\activiti-5.9\trunk\distro\target\activiti-5.9\setup and run "ant tomcat.stop", "ant deploy.activiti.webapps.into.tomcat", and "ant tomcat.start" in this order.
+4. Restart the eclipse remote debugging.
+
+--
+Web references for tomcat eclipse remote debugging:
+http://wiki.apache.org/tomcat/FAQ/Developing
+https://confluence.sakaiproject.org/display/BOOT/Setting+Up+Tomcat+For+Remote+Debugging
+https://confluence.sakaiproject.org/display/BOOT/Debugging+Tomcat+Remotely+Using+Eclipse

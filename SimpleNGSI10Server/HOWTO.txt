@@ -1,0 +1,71 @@
+A simple quick start guide to run the Java web application based NGSI10 server.
+
+1. Install Java 6 or higher and Maven 2 or higher, make sure port 8080 is not used
+2. Go to the directory NGSI910DatastructuresAndNGSI10Operations
+3. On a command line, enter 'mvn install'
+4. Go to the root directory of this application, SimpleNGSI10Server
+5. On a command line, enter 'mvn jetty:run'
+6. Wait until the server startup has finished
+7. Start a RESTful test client of your choice(like cURL, Postman Chrome Plug-In, RESTClient Firefox Plug-In) 
+8. Do the following query:
+    URL: http://localhost:8080/NGSI10/queryContext/
+    Method: POST
+    Content-Type: application/xml
+    Body: <insert the text from doc/example_query.xml>
+9. Check whether the response body looks as expected:
+    <?xml version="1.0" encoding="UTF-8"?>
+    <queryContextResponse>
+       <contextResponseList>
+          <contextElementResponse>
+             <contextElement>
+                <entityId>
+                   <id>42</id>
+                </entityId>
+                <contextAttributeList>
+                   <contextAttribute>
+                      <name>temperature</name>
+                      <contextValue>20</contextValue>
+                      <metadata>
+                         <contextMetadata>
+                            <name>sensortype</name>
+                            <value>wired</value>
+                         </contextMetadata>
+                      </metadata>
+                   </contextAttribute>
+                   <contextAttribute>
+                      <name>temperature</name>
+                      <contextValue>22</contextValue>
+                      <metadata>
+                         <contextMetadata>
+                            <name>sensortype</name>
+                            <value>remote sensor</value>
+                         </contextMetadata>
+                      </metadata>
+                   </contextAttribute>
+                </contextAttributeList>
+             </contextElement>
+             <statusCode>
+                <code>200</code>
+                <reasonPhrase>OK</reasonPhrase>
+             </statusCode>
+          </contextElementResponse>
+          <contextElementResponse>
+             <contextElement>
+                <entityId>
+                   <id>1</id>
+                </entityId>
+                <contextAttributeList>
+                   <contextAttribute>
+                      <name>temperature</name>
+                      <contextValue>31</contextValue>
+                   </contextAttribute>
+                </contextAttributeList>
+             </contextElement>
+             <statusCode>
+                <code>200</code>
+                <reasonPhrase>OK</reasonPhrase>
+             </statusCode>
+          </contextElementResponse>
+       </contextResponseList>
+    </queryContextResponse>
+        

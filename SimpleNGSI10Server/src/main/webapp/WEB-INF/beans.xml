@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+
+    <context:component-scan base-package="com.sap.research.fiware.ngsi10.simple"/>
+
+    <jaxrs:server id="restContainer" address="/">
+        <jaxrs:serviceBeans>
+            <ref bean="queryContext"/>
+            <ref bean="updateContext"/>
+            <ref bean="subscribeContext"/>
+        </jaxrs:serviceBeans>
+        <jaxrs:dataBinding>
+			<bean class="org.apache.cxf.xmlbeans.XmlBeansDataBinding"/>
+		</jaxrs:dataBinding> 
+    </jaxrs:server>
+</beans>

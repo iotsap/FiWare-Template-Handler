@@ -1,0 +1,2 @@
+1. Install maven
+2. Load the precompiled files to your local repository by executing "mvn install" on a command line
