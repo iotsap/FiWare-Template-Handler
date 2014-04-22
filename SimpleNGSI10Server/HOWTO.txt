@@ -4,15 +4,17 @@ A simple quick start guide to run the Java web application based NGSI10 server.
 2. Go to the directory NGSI910DatastructuresAndNGSI10Operations
 3. On a command line, enter 'mvn install'
 4. Go to the root directory of this application, SimpleNGSI10Server
-5. On a command line, enter 'mvn jetty:run'
-6. Wait until the server startup has finished
-7. Start a RESTful test client of your choice(like cURL, Postman Chrome Plug-In, RESTClient Firefox Plug-In) 
-8. Do the following query:
+5. Open main/resources/placeholder.properties
+6. Replace ngsiServerPublicURL by the URL the server will be accessible from outside (ergo NOT localhost:8080) and brokerURL by the URL the registerContext should be sent to
+7. On a command line, enter 'mvn jetty:run'
+8. Wait until the server startup has finished
+9. Start a RESTful test client of your choice(like cURL, Postman Chrome Plug-In, RESTClient Firefox Plug-In) 
+10. Do the following query:
     URL: http://localhost:8080/NGSI10/queryContext/
     Method: POST
     Content-Type: application/xml
     Body: <insert the text from doc/example_query.xml>
-9. Check whether the response body looks as expected:
+11. Check whether the response body looks as expected:
     <?xml version="1.0" encoding="UTF-8"?>
     <queryContextResponse>
        <contextResponseList>

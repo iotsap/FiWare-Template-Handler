@@ -12,6 +12,9 @@
 			org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
+	<listener>
+		<listener-class>com.sap.research.fiware.ngsi10.simple.startup.StartupListener</listener-class>
+	</listener>
 	<servlet>
 		<servlet-name>CXFServlet</servlet-name>
 		<display-name>CXF Servlet</display-name>
