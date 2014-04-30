@@ -12,7 +12,10 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import noNamespace.ContextAttribute;
 import noNamespace.ContextRegistration;
+import noNamespace.ContextRegistrationAttribute;
+import noNamespace.ContextRegistrationAttributeList;
 import noNamespace.ContextRegistrationList;
 import noNamespace.EntityId;
 import noNamespace.EntityIdList;
@@ -50,15 +53,22 @@ public class RegisterContextClient {
 
 	private HttpPost post;
 	
+	EntityId id;
+	
 	private String ngsiServerPublicURL;
 	private URI brokerURL;
 
+	private ContextAttribute attribute;
+
 	/**
+	 * @param attribute 
 	 * @param subscription
 	 *            the subscription that triggered the context notification
 	 */
 
-	public void registerContext() throws ServerConnectionException {
+	public void registerContext(EntityId id, ContextAttribute attribute) throws ServerConnectionException {
+		this.id = id;
+		this.attribute = attribute;
 		try {
 			LOG.info("Trying to reach broker for context registration");
 			registerContextWithoutErrorHandling();
@@ -70,6 +80,7 @@ public class RegisterContextClient {
 
 	/**
 	 * sends the notification
+	 * @param id 
 	 * 
 	 * @throws ServerConnectionException
 	 *             the endpoint is unreachable or sent an unappropriate response
@@ -103,10 +114,13 @@ public class RegisterContextClient {
 		ContextRegistration registration = list.addNewContextRegistration();
 		EntityIdList entityIDList = registration.addNewEntityIdList();
 		EntityId entityID = entityIDList.addNewEntityId();
-		entityID.setId("*");
-		entityID.setIsPattern(true);
+		entityID.setId(id.getId());
+		entityID.setType(id.getType());
+		ContextRegistrationAttributeList attributeList = registration.addNewContextRegistrationAttributeList();
+		ContextRegistrationAttribute attributeElement = attributeList.addNewContextRegistrationAttribute();
+		attributeElement.setIsDomain(false);
+		attributeElement.setName(attribute.getName());
 		registration.setProvidingApplication(ngsiServerPublicURL);
-		
 	}
 
 	private void sendQuery() throws IOException,

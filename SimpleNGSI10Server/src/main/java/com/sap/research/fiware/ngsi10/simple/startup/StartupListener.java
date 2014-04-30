@@ -19,11 +19,11 @@ public class StartupListener implements ServletContextListener {
 	
 	@Override
 	public void contextInitialized(ServletContextEvent context) {
-	      try {
+	      /*try {
 			(new RegisterContextClient()).registerContext();
 		} catch (ServerConnectionException e) {
 			LOG.warning("Could not register context: "+e.getMessage());
-		}
+		}*/
 	}
 
 	@Override

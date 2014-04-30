@@ -14,6 +14,7 @@ import org.xml.sax.SAXException;
 import com.signavio.platform.core.Platform;
 import com.signavio.platform.core.PlatformProperties;
 import com.signavio.platform.util.fsbackend.FileSystemUtil;
+import com.signavio.warehouse.business.util.NGSIUpdateContextClient;
 
 import de.hpi.bpmn2_0.exceptions.BpmnConverterException;
 import de.hpi.bpmn2_0.transformation.Diagram2XmlConverter;
@@ -28,5 +29,11 @@ public class BPMN20XMLFileUtil {
 		
 		FileSystemUtil.deleteFileOrDirectory(path);
 		FileSystemUtil.createFile(path, xml.toString());
+		
+		try {
+			NGSIUpdateContextClient.sendModel(path, xml.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

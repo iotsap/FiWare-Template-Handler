@@ -14,7 +14,9 @@ import noNamespace.UpdateActionType.Enum;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlString;
 
+import com.sap.research.fiware.ngsi10.simple.RegisterContextClient;
 import com.sap.research.fiware.ngsi10.simple.exceptions.NotFoundException;
+import com.sap.research.fiware.ngsi10.simple.exceptions.ServerConnectionException;
 import com.sap.research.fiware.ngsi10.simple.subscriptionmanagement.SubscriptionManager;
 import com.sap.research.fiware.ngsi10.simple.wrappers.EntityIdWrapper;
 
@@ -56,16 +58,16 @@ public class DataStore {
 		String name = attribute.getName();
 		Map<String, LinkedList<ContextAttribute>> attributes = getOrCreateAttributes(entityWrapper, action);
 		notifySubscribers(entityWrapper, attribute, name, attributes);
-		chooseSaveAction(attribute, action, name, attributes);
+		chooseSaveAction(entityId, attribute, action, name, attributes);
 	}
 	
-	private void chooseSaveAction(ContextAttribute attribute, Enum action, String name, Map<String, LinkedList<ContextAttribute>> attributes)
+	private void chooseSaveAction(EntityId entityId, ContextAttribute attribute, Enum action, String name, Map<String, LinkedList<ContextAttribute>> attributes)
 			throws NotFoundException {
 		switch(action.intValue()) {
 			case (UpdateActionType.INT_DELETE) :
 				delete(name, attributes);
 			case(UpdateActionType.INT_APPEND) :
-				append(attribute, name, attributes);
+				append(entityId, attribute, name, attributes);
 			case(UpdateActionType.INT_UPDATE) :
 				update(attribute, name, attributes);
 		}
@@ -80,12 +82,19 @@ public class DataStore {
 		attributeEntries.add(attribute);
 	}
 
-	private void append(ContextAttribute attribute, String name, Map<String, LinkedList<ContextAttribute>> attributes)
+	private void append(EntityId entityId, ContextAttribute attribute, String name, Map<String, LinkedList<ContextAttribute>> attributes)
 			throws NotFoundException {
 		if(attributes == null) 
 			throw new NotFoundException();
-		if (attributes.get(name) == null)
+		if (attributes.get(name) == null) {
 			attributes.put(name, new LinkedList<ContextAttribute>());
+			try {
+				new RegisterContextClient().registerContext(entityId, attribute);
+			} catch (ServerConnectionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		attributes.get(name).add(attribute);
 	}
 
@@ -111,6 +120,8 @@ public class DataStore {
 	
 	private void notifySubscribers(EntityIdWrapper entityWrapper, ContextAttribute attribute, String name, Map<String, LinkedList<ContextAttribute>> attributes) {
 		LinkedList<ContextAttribute> namedAttrs = attributes.get(name);
+		if(namedAttrs == null)
+			return;
 		ContextAttribute recent = namedAttrs.getLast();
 		SubscriptionManager.get().valueUpdateReceivedFromTo(entityWrapper, recent, attribute);
 	}

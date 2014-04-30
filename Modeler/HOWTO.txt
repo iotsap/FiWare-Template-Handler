@@ -1,16 +1,14 @@
 1. Install a tomcat server (http://tomcat.apache.org)
 2. Install Apache Ant if not done before
 3. Copy the content of helpers_for_initial_build to platform/WebContent/WEB-INF/lib/  [1]
-4. Run the command "ant build-all-in-one-war" on the command line in the project folder
-5. Open the generated target/modeler.war with 7-zip. A file system navigator will appear. Browse to the location where the file is placed and then under and double-click on it. Then double-click through the directory structure to WEB-INF/classes/configuration.properties.
-6. Double-clicking the file will open a text editor.
-7. Set for "fileSystemRootDirectory" an existing path on your system, e.g. "c:/repository". The created models will be saved in this directory.
-8. Under Unix please make sure the user running the tomcat process has the permissions set to write in the folder
-9. Set for "host" the host and port under which tomcat is reachable. It must be accessible from the outside, i.e. use the actual ip address within your network and not localhost.
-10. Save the file in the editor and close the editor. A 7-zip message will appear asking whether the modifications should be applied to the orginal file, as shown below. Answer with ok.
-11. Copy the generated signaviocore.war file to your tomcat webapps folder
-12. Run <tomcat-folder>/bin/startup.bat (or startup.sh under Unix)
-13. Open your browser and go to http://localhost:8080/signaviocore/
+4. Open build.properties
+5. Set for "fileSystemRootDirectory" an existing path on your system, e.g. "c:/repository". The created models will be saved in this directory.
+6. Under Unix please make sure the user running the tomcat process has the permissions set to write in the folder
+7. Set for "host" the host and port under which tomcat is reachable. It must be accessible from the outside, i.e. use the actual ip address within your network and not localhost.
+8. Run the command "ant build-all-in-one-war" on the command line in the project folder
+9. Copy the generated signaviocore.war file to your tomcat webapps folder
+10. Run <tomcat-folder>/bin/startup.bat (or startup.sh under Unix)
+11. Open your browser and go to http://localhost:8080/signaviocore/
 
 The Signavio Explorer should now be displayed.
 
