@@ -73,6 +73,7 @@ public class NGSISubscribeContextClient {
     try {
       subscribeWithoutExceptionHandling();
     } catch (Exception e) {
+	  e.printStackTrace();
       throw new ActivitiException(getInformationString() + "Subscription failed.", e);
     } 
     LOG.info(getInformationString() + "Successfully subscribed. Subscription ID is " + subscriptionID);
@@ -106,8 +107,10 @@ public class NGSISubscribeContextClient {
     post.addHeader("Content-Type", "application/xml");
     String baseUri = Context.getProcessEngineConfiguration().getNgsiServerURL();
     String uri = baseUri+"subscribeContext/";
+	System.out.println("Sending subscribeContextRequest to: " + uri);
     post.setURI(new URI(uri));
-    StringEntity entity = new StringEntity(subscribeContextRequest.toString());
+	System.out.println("Request is " + subscribeContextRequestDocument.toString());
+    StringEntity entity = new StringEntity(subscribeContextRequestDocument.toString());
     post.setEntity(entity);
   }
 

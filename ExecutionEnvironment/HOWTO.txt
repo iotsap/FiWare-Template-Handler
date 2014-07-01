@@ -5,8 +5,8 @@
 	Write for "contextSubscriptionReferenceURL" the path where the deployment is accessible later, e.g. http://192.168.178.42:8080/activiti-explorer2/. It should be reachable from other participants, so do not use ‘localhost’ as host. The trailing slash is necessary.
 	Set for ngsiServerURL the NGSI server’s deployment path, e.g. http://localhost:8080/NGSI10/. If you are not sure go again to http://localhost:8080/tomcat/manager/html and have a look in the appearing list.
 5.	Go to modules/activiti-engine
-6.	Enter 'mvn install'
+6.	Enter 'mvn install -DskipTests'
 7.	Go to modules/activiti-webapp-explorer2
-8.	Enter 'mvn package'
+8.	Enter 'mvn package -DskipTests'
 9.	Copy the generated ExecutionEnvironment/modules/activiti-webapp-explorer2/target/activiti-webapp-explorer2-5.9.war file to your tomcat webapps folder
 10.	Run <tomcat-folder>/bin/startup.bat (or startup.sh under Unix)

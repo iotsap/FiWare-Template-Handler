@@ -52,7 +52,7 @@ public class NGSIQueryContextClient {
   protected static final Logger LOGGER = Logger.getLogger(NGSIQueryContextClient.class.getName());
 
   public String getValue(EntityId entityID, String contextAttribute) throws IllegalStateException, IOException, URISyntaxException, XmlException {
-    QueryContextRequest requestPayload = buildRequestPayload(entityID, contextAttribute);
+    QueryContextRequestDocument requestPayload = buildRequestPayload(entityID, contextAttribute);
     HttpPost httpRequest = buildHttpRequest(requestPayload);
     HttpResponse httpresponse = executeHttpRequest(httpRequest);
     QueryContextResponse response = parseReponseDocFromRequest(httpresponse);
@@ -66,12 +66,12 @@ public class NGSIQueryContextClient {
     return httpresponse;
   }
 
-  private QueryContextRequest buildRequestPayload(EntityId entityID, String contextAttribute) {
+  private QueryContextRequestDocument buildRequestPayload(EntityId entityID, String contextAttribute) {
     QueryContextRequestDocument doc = QueryContextRequestDocument.Factory.newInstance();
     QueryContextRequest request = doc.addNewQueryContextRequest();
     request.addNewEntityIdList().addNewEntityId().setId(entityID.getId());
     request.addNewAttributeList().addAttribute(contextAttribute);
-    return request;
+    return doc;
   }
 
   private QueryContextResponse parseReponseDocFromRequest(HttpResponse httpresponse) throws IOException, XmlException {
@@ -83,13 +83,13 @@ public class NGSIQueryContextClient {
     return response;
   }
 
-  private HttpPost buildHttpRequest(QueryContextRequest request) throws URISyntaxException, UnsupportedEncodingException {
+  private HttpPost buildHttpRequest(QueryContextRequestDocument requestDocument) throws URISyntaxException, UnsupportedEncodingException {
     HttpPost post = new HttpPost();
     post.addHeader("Content-Type", "application/xml");
     String baseUri = Context.getProcessEngineConfiguration().getNgsiServerURL();
     String uri = baseUri+"queryContext/";
     post.setURI(new URI(uri));
-    StringEntity entity = new StringEntity(request.toString());
+    StringEntity entity = new StringEntity(requestDocument.toString());
     post.setEntity(entity);
     return post;
   }
