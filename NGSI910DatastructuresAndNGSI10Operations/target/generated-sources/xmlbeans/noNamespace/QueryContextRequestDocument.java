@@ -17,7 +17,7 @@ package noNamespace;
 public interface QueryContextRequestDocument extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(QueryContextRequestDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sF733C3476363FC28D1181AAD31C7BCE8").resolveHandle("querycontextrequest93afdoctype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(QueryContextRequestDocument.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s12286FC6F9B192FE0A2CA4F97C96C4A4").resolveHandle("querycontextrequest93afdoctype");
     
     /**
      * Gets the "queryContextRequest" element

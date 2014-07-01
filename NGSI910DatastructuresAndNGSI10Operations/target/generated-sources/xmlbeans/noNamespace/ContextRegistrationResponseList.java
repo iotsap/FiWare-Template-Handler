@@ -16,7 +16,7 @@ package noNamespace;
 public interface ContextRegistrationResponseList extends org.apache.xmlbeans.XmlObject
 {
     public static final org.apache.xmlbeans.SchemaType type = (org.apache.xmlbeans.SchemaType)
-        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ContextRegistrationResponseList.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.sF733C3476363FC28D1181AAD31C7BCE8").resolveHandle("contextregistrationresponselistfcfetype");
+        org.apache.xmlbeans.XmlBeans.typeSystemForClassLoader(ContextRegistrationResponseList.class.getClassLoader(), "schemaorg_apache_xmlbeans.system.s12286FC6F9B192FE0A2CA4F97C96C4A4").resolveHandle("contextregistrationresponselistfcfetype");
     
     /**
      * Gets array of all "contextRegistrationResponse" elements
