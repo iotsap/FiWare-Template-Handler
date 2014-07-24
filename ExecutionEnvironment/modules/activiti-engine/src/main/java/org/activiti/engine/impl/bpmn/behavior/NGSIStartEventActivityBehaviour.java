@@ -32,6 +32,8 @@ import org.activiti.engine.impl.bpmn.data.iota.DataObjectDataOutputAssociation;
 import org.activiti.engine.impl.bpmn.helper.NGSISubscriptionManager;
 import org.activiti.engine.impl.pvm.delegate.ActivityExecution;
 import org.activiti.engine.impl.pvm.process.PhysicalAssociation;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -64,6 +66,7 @@ import org.activiti.engine.impl.pvm.process.PhysicalAssociation;
  * context notification has been received.
  */
 public class NGSIStartEventActivityBehaviour extends FlowNodeActivityBehavior {
+  protected static final Logger LOGGER = Logger.getLogger(NGSIStartEventActivityBehaviour.class.getName());
   
   DataObjectDataOutputAssociation dataAssociation;
   private String processDefinitionID;
@@ -83,6 +86,7 @@ public class NGSIStartEventActivityBehaviour extends FlowNodeActivityBehavior {
       processDefinitionID = execution.getProcessDefinitionId();
     }
     else {                  //now it's really executed
+	  LOGGER.info("Successfully triggered start event");
       execution.setVariable(dataAssociation.getTarget(), sentItem);
       super.execute(execution);
     }

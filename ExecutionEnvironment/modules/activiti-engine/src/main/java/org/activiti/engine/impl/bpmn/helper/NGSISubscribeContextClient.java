@@ -106,7 +106,7 @@ public class NGSISubscribeContextClient {
     post = new HttpPost();
     post.addHeader("Content-Type", "application/xml");
     String baseUri = Context.getProcessEngineConfiguration().getNgsiServerURL();
-    String uri = baseUri+"subscribeContext/";
+    String uri = baseUri+"subscribeContext";
 	System.out.println("Sending subscribeContextRequest to: " + uri);
     post.setURI(new URI(uri));
 	System.out.println("Request is " + subscribeContextRequestDocument.toString());
@@ -171,7 +171,10 @@ public class NGSISubscribeContextClient {
   
   private void readHTTPResponse() throws IllegalStateException, IOException, XmlException {
     InputStream input = httpresponse.getEntity().getContent();
-    SubscribeContextResponseDocument responseDoc = SubscribeContextResponseDocument.Factory.parse(input);
+	java.util.Scanner s = new java.util.Scanner(input).useDelimiter("\\A");
+    String string = s.hasNext() ? s.next() : "";
+	System.out.println("NGSI response:\n"+string);
+    SubscribeContextResponseDocument responseDoc = SubscribeContextResponseDocument.Factory.parse(string);
     subscribeContextResponse = responseDoc.getSubscribeContextResponse();
     if(!subscribeContextResponse.validate()) 
       throw new ActivitiException("Response from NGSI server is not valid");
